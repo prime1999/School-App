@@ -127,3 +127,33 @@
                 0 0 0 4px linear-gradient(to right, #6366f1, #ec4899);
     z-index: 1;
 }
+
+.loader {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    background: #fff;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  .loader:after{
+    content: '';
+    position: absolute;
+    inset: 6px;
+    margin: auto;
+    background: rgb(1, 227, 72);
+     border-radius: 50%;
+  }
+  .loader:before{
+    content: '';
+    position: absolute;
+    inset: 0px;
+    margin: auto;
+    background: #00ae26;
+    animation: crlMugLoader 2s linear infinite alternate;
+  }
+  @keyframes crlMugLoader {
+    0%  ,10% { transform: translateY(32px) }
+    90% , 100% { transform: translateY(0px) }
+  }
+      

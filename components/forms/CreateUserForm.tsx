@@ -4,6 +4,9 @@ import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 
 import { MdEmail, MdNumbers } from "react-icons/md";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -11,12 +14,18 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
+import { createUser } from "@/lib/slice/AuthSlice";
+import { AppDispatch } from "@/lib/store";
+import Alert from "@/lib/utils/Alert";
+import SubmitButton from "@/lib/utils/SubmitButton";
 
 const formSchema = z.object({
-	MatricNumber: z
-		.number({ required_error: "Matric number is required" })
-		.min(6, "Invalid Matric Number")
-		.max(6, "Invalid Matric Number"),
+	MatricNumber: z.coerce
+		.number({
+			required_error: "Matric number is required",
+		})
+		.min(100000, "Invalid Matric Number")
+		.max(999999, "Invalid Matric Number"),
 	email: z.string().email("Invalid email address"),
 	password: z
 		.string()
@@ -27,11 +36,17 @@ const formSchema = z.object({
 });
 
 const CreateUserForm = () => {
+	// get the auth loading state from the redux store
+	const { isLoading } = useSelector((state: any) => state.auth);
+	// init register
+	const router = useRouter();
+	// init dispatch
+	const dispatch = useDispatch<AppDispatch>();
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			MatricNumber: 123456,
+			MatricNumber: "" as any,
 			email: "",
 			password: "",
 		},
@@ -41,7 +56,25 @@ const CreateUserForm = () => {
 		setShowPassword(() => !showPassword);
 	};
 
-	const onSubmit = () => {};
+	const onSubmit = async (values: z.infer<any>) => {
+		try {
+			const user = {
+				MatricNumber: values.MatricNumber,
+				email: values.email,
+				password: values.password,
+			};
+
+			const newUser = (await dispatch(createUser(user))) as any;
+			if (newUser.payload.student) {
+				router.push(
+					`students/${newUser?.payload?.student?.id as any}/register`
+				);
+			}
+			console.log(newUser);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	return (
 		<Form {...form}>
@@ -79,13 +112,14 @@ const CreateUserForm = () => {
 					handleShowPassword={handleShowPassword}
 					iconSrc={showPassword ? <FaEyeSlash /> : <FaEye />}
 				/>
-				<Button
-					type="submit"
-					className="w-full bg-green-400 font-inter font-bold cursor-pointer hover:bg-green-600"
+				<SubmitButton
+					isLoading={false}
+					className="w-full bg-green-400 text-black rounded-lg font-inter font-bold"
 				>
 					Get Started
-				</Button>
+				</SubmitButton>
 			</form>
+			<Alert />
 		</Form>
 	);
 };

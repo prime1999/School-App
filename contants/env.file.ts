@@ -1,0 +1,21 @@
+const ENDPOINT = process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT as string;
+const APIKEY = process.env.APPWRITE_API_KEY as string;
+const STUDENTID = process.env.NEXT_PUBLIC_STUDENT_COLLECTION_ID as string;
+const DBID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID as string;
+const PROJECTID = process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID as string;
+const TIME_TABLE_ID = process.env
+	.NEXT_PUBLIC_TIME_TABLE_COLLECTION_ID as string;
+const NOTEID = process.env.NEXT_PUBLIC_NOTE_COLLECTION_ID as string;
+const EXAM_SCHEDULE_ID = process.env
+	.NEXT_PUBLIC_EXAM_SCHEDULE_COLLECTION_ID as string;
+
+export {
+	ENDPOINT,
+	APIKEY,
+	STUDENTID,
+	DBID,
+	PROJECTID,
+	TIME_TABLE_ID,
+	NOTEID,
+	EXAM_SCHEDULE_ID,
+};

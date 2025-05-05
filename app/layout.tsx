@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Big_Shoulders_Stencil_Text, Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Providers } from "@/lib/Provider";
 
 const bigShoulder = Big_Shoulders_Stencil_Text({
 	variable: "--font-big-shoulder-stencil",
@@ -26,11 +27,15 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" suppressHydrationWarning>
-			<body className={`${bigShoulder.variable} ${inter.variable} antialiased`}>
-				<ThemeProvider attribute="class" defaultTheme="dark">
-					{children}
-				</ThemeProvider>
-			</body>
+			<Providers>
+				<body
+					className={`${bigShoulder.variable} ${inter.variable} antialiased`}
+				>
+					<ThemeProvider attribute="class" defaultTheme="dark">
+						{children}
+					</ThemeProvider>
+				</body>
+			</Providers>
 		</html>
 	);
 }

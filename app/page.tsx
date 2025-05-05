@@ -22,7 +22,7 @@ const page = () => {
 					</p>
 				</div>
 			</div>
-			<div className="hidden w-1/2 h-full lg:block">
+			<div className="hidden w-1/2 h-[100vh] lg:block">
 				<Image
 					src="/assets/images/getStarted.jpg"
 					alt="student-image"

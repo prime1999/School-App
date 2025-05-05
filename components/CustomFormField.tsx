@@ -71,7 +71,7 @@ const CustomFormField = (props: CustomProps) => {
 		<main>
 			<FormField
 				control={control}
-				name="name"
+				name={props.name}
 				render={({ field }) => (
 					<FormItem>
 						{props.fieldType !== FormFieldType.checkbox && label && (
@@ -79,7 +79,7 @@ const CustomFormField = (props: CustomProps) => {
 								{label}
 							</FormLabel>
 						)}
-						<RenderInput field={FormFieldType} props={props} /> <FormMessage />
+						<RenderInput field={field} props={props} /> <FormMessage />
 					</FormItem>
 				)}
 			/>
