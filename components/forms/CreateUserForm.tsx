@@ -11,29 +11,13 @@ import { useSelector } from "react-redux";
 import { MdEmail, MdNumbers } from "react-icons/md";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import { createUser } from "@/lib/slice/AuthSlice";
 import { AppDispatch } from "@/lib/store";
 import Alert from "@/lib/utils/Alert";
 import SubmitButton from "@/lib/utils/SubmitButton";
-
-const formSchema = z.object({
-	MatricNumber: z.coerce
-		.number({
-			required_error: "Matric number is required",
-		})
-		.min(100000, "Invalid Matric Number")
-		.max(999999, "Invalid Matric Number"),
-	email: z.string().email("Invalid email address"),
-	password: z
-		.string()
-		.min(6, "Password must be at least 6 characters")
-		.regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/, {
-			message: "Password must contain letters and at least one number",
-		}),
-});
+import { CreateUserSchema } from "@/lib/types";
 
 const CreateUserForm = () => {
 	// get the auth loading state from the redux store
@@ -43,8 +27,8 @@ const CreateUserForm = () => {
 	// init dispatch
 	const dispatch = useDispatch<AppDispatch>();
 	const [showPassword, setShowPassword] = useState<boolean>(false);
-	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(formSchema),
+	const form = useForm<z.infer<typeof CreateUserSchema>>({
+		resolver: zodResolver(CreateUserSchema),
 		defaultValues: {
 			MatricNumber: "" as any,
 			email: "",
@@ -113,7 +97,7 @@ const CreateUserForm = () => {
 					iconSrc={showPassword ? <FaEyeSlash /> : <FaEye />}
 				/>
 				<SubmitButton
-					isLoading={false}
+					isLoading={isLoading}
 					className="w-full bg-green-400 text-black rounded-lg font-inter font-bold"
 				>
 					Get Started
