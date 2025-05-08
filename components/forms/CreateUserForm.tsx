@@ -17,7 +17,7 @@ import { createUser } from "@/lib/slice/AuthSlice";
 import { AppDispatch } from "@/lib/store";
 import Alert from "@/lib/utils/Alert";
 import SubmitButton from "@/lib/utils/SubmitButton";
-import { CreateUserSchema } from "@/lib/types";
+import { CreateUserSchema } from "../../lib/Validation";
 
 const CreateUserForm = () => {
 	// get the auth loading state from the redux store

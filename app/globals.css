@@ -117,8 +117,9 @@
 		@apply border-border outline-ring/50;
 	}
 	body {
-		@apply bg-background text-foreground;
+		@apply bg-background text-foreground overflow-hidden p-0 m-0 box-border h-[100vh];
 	}
+	
 }
 
 .focus-shadow {
@@ -156,4 +157,59 @@
     0%  ,10% { transform: translateY(32px) }
     90% , 100% { transform: translateY(0px) }
   }
+
+  /* =====  REACT PHONE NUMBER INPUT OVERRIDES */
+.PhoneInputInput {
+	outline: none;
+	margin-left: 4px;
+	background: transparent;
+	font-size: 14px;
+	font-weight: 500;
+	border: none;
+  }
+  
+  .PhoneInputInput::placeholder {
+	color: #1a1d21;
+  }
+
+  .PhoneInputCountrySelect {  
+	width: 100%; 
+	color: #fff;  
+	border: none;  
+	background: rgb(55, 55, 55);  
+	font-size: 14px;  
+	padding: 8px;   
+	border: none;
+	outline: none;
+}
+
+.PhoneInputCountryOptionsLabel {
+	color: white;
+}
+
+.PhoneInputOptions{
+	color: white;
+}
+
+.scrollable-div::-webkit-scrollbar {
+	width: 8px; /* width of the vertical scrollbar */
+	height: 8px; /* height of the horizontal scrollbar */
+  }
+  
+  .scrollable-div::-webkit-scrollbar-track {
+	background: #000000; /* track color */
+	border-radius: 4px;
+  }
+  
+  .scrollable-div::-webkit-scrollbar-thumb {
+	background: #7ff58b; /* scrollbar handle */
+	border-radius: 4px;
+  }
+  
+  .scrollable-div::-webkit-scrollbar-thumb:hover {
+	background: #02a312; /* on hover */
+  }
+  
+
+  
       

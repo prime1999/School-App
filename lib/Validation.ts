@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export const StudenFormSchema = z.object({
 	MatricNumber: z.coerce
 		.number({
@@ -21,7 +23,10 @@ export const StudenFormSchema = z.object({
 		.min(2, "Invalid department")
 		.max(500, "Invalid department"),
 	school: z.string().min(2, "Invalid school").max(500, "Invalid school"),
-	level: z.number().min(100, "Invalid Level").max(999, "Invalid Level"),
+	level: z.coerce
+		.number({ required_error: "Level is required" })
+		.min(100, "Invalid Level")
+		.max(999, "Invalid Level"),
 });
 
 export const CreateUserSchema = z.object({

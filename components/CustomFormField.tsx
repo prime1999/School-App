@@ -1,26 +1,39 @@
 "use client";
+
+import { E164Number } from "libphonenumber-js/core";
 import {
 	FormControl,
-	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+
 import { Input } from "@/components/ui/input";
 import { Control } from "react-hook-form";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 export enum FormFieldType {
 	input = "input",
-	// TEXTAREA = "textarea",
-	// PHONE_INPUT = "phoneInput",
+	phone_input = "phoneInput",
 	checkbox = "checkbox",
+	select = "select",
+	skeleton = "skeleton",
 }
 interface CustomProps {
 	control: Control<any>;
 	name: string;
 	label?: string;
 	type?: string;
+	array?: any;
 	inputMode?: string;
 	placeholder?: string;
 	pattern?: string;
@@ -31,9 +44,12 @@ interface CustomProps {
 	children?: React.ReactNode;
 	renderSkeleton?: (field: any) => React.ReactNode;
 	fieldType: FormFieldType;
+	class?: string;
+	handleSelect?: any;
 }
 
 const RenderInput = ({ props, field }: { props: CustomProps; field: any }) => {
+	console.log(props.array);
 	switch (props.fieldType) {
 		case FormFieldType.input:
 			return (
@@ -62,6 +78,39 @@ const RenderInput = ({ props, field }: { props: CustomProps; field: any }) => {
 					</FormControl>
 				</div>
 			);
+		case FormFieldType.phone_input:
+			return (
+				<FormControl className="w-full">
+					<PhoneInput
+						defaultCountry="NG"
+						placeholder={props.placeholder}
+						international
+						withCountryCallingCode
+						value={field.value as E164Number | undefined}
+						onChange={field.onChange}
+						className="mt-2 h-10 rounded-md bg-[#151515] px-3 text-sm border bg-dark-400 placeholder:text-dark-600 border-dark-500 focus:border-green-400 focus:ring-green-400 focus:shadow-green-400 focus:shadow-md"
+					/>
+				</FormControl>
+			);
+		case FormFieldType.select:
+			return (
+				<Select onValueChange={props.handleSelect}>
+					<SelectTrigger className="w-full">
+						<SelectValue placeholder={props.placeholder} />
+					</SelectTrigger>
+					<SelectContent>
+						{props.array?.map((list: any, i: number) => (
+							<SelectItem key={i} value={list.value}>
+								{list.name}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
+			);
+		case FormFieldType.skeleton:
+			return props.renderSkeleton ? props.renderSkeleton(field) : null;
+		default:
+			return null;
 	}
 };
 
