@@ -1,8 +1,24 @@
+"use client";
+
 import StudentForm from "@/components/forms/StudentForm";
 import Logo from "@/components/Logo";
-import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/lib/store";
+import { getCurrentUser } from "@/lib/slice/StudentSlice";
 
 const page = () => {
+	const dispatch = useDispatch<AppDispatch>();
+	const pathname = usePathname();
+	console.log(pathname);
+	const paths = pathname.split("/");
+	console.log(paths[2]);
+
+	useEffect(() => {
+		const student = dispatch(getCurrentUser(paths[2]));
+		console.log(student);
+	}, []);
 	return (
 		<main className="flex justify-center items-center h-[100vh] w-[100vw]">
 			<div className="flex w-full h-full mx-auto justify-between gap-4">

@@ -51,3 +51,16 @@ export const createAppwriteuserDocument = async (userDocData: any) => {
 		return error;
 	}
 };
+
+// function to get a student based on the id from the appwrite collection
+export const getCurrentStudent = async (userID: string) => {
+	try {
+		console.log(userID);
+		// get the student from the DB
+		const currentStudent = await databases.getDocument(DBID, STUDENTID, userID);
+		console.log(currentStudent);
+		return currentStudent;
+	} catch (error) {
+		console.log(error);
+	}
+};

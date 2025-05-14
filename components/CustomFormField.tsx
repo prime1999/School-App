@@ -46,6 +46,7 @@ interface CustomProps {
 	fieldType: FormFieldType;
 	class?: string;
 	handleSelect?: any;
+	disabled?: boolean;
 }
 
 const RenderInput = ({ props, field }: { props: CustomProps; field: any }) => {
@@ -72,6 +73,7 @@ const RenderInput = ({ props, field }: { props: CustomProps; field: any }) => {
 							placeholder={props.placeholder}
 							{...field}
 							inputMode={props.inputMode}
+							disabled={props.disabled}
 							className="shad-input border-1 pl-8"
 						/>
 					</FormControl>

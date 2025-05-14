@@ -28,24 +28,28 @@ const initialState: initType = {
 	message: "",
 };
 
+// store function for creating a user
 export const createUser = createAsyncThunk(
 	"auth/createStudent",
 	async (userData: any, thunkAPI) => {
 		try {
-			console.log({ slice: "slice", userData });
+			// paa the user data to the function that will send it to appwrite
 			const studentRes: any = await createAppwriteUser(userData);
 			console.log(studentRes);
+			// if positive res was gotten, then
 			if (studentRes.$id) {
 				const student = {
 					id: studentRes.$id,
 					email: studentRes.email,
 					MatricNumber: studentRes.MatricNumber,
 				};
+				// return the response after formatting the the response
 				return {
 					isAuthenticated: true,
 					student,
 				};
 			}
+			// else return a false response
 			return { isAuthenticated: false, student: null };
 		} catch (error) {
 			console.log(error);

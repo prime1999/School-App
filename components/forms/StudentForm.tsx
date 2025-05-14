@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -25,6 +26,9 @@ const StudentForm = () => {
 	const [departments, setdepartments] = useState<any>(null);
 	const [Level, setLevel] = useState<{}[]>(levels);
 
+	const { isLoading, student } = useSelector((state: any) => state.student);
+	console.log(student);
+
 	const form = useForm<z.infer<typeof StudenFormSchema>>({
 		resolver: zodResolver(StudenFormSchema),
 		defaultValues: {
@@ -39,6 +43,13 @@ const StudentForm = () => {
 		},
 	});
 
+	useEffect(() => {
+		if (student && student.email) {
+			form.reset({
+				email: student.email,
+			});
+		}
+	}, [student]);
 	const handleSelect = (value: string) => {
 		const departments = departmentsByFaculty[value];
 		setdepartments(departments);
@@ -75,6 +86,7 @@ const StudentForm = () => {
 								type="email"
 								inputMode="numeric"
 								iconSrc={<BsEnvelope />}
+								disabled={true}
 							/>
 						</div>
 						<div className="w-full">
