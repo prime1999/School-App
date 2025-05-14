@@ -49,7 +49,6 @@ interface CustomProps {
 }
 
 const RenderInput = ({ props, field }: { props: CustomProps; field: any }) => {
-	console.log(props.array);
 	switch (props.fieldType) {
 		case FormFieldType.input:
 			return (
@@ -94,7 +93,12 @@ const RenderInput = ({ props, field }: { props: CustomProps; field: any }) => {
 			);
 		case FormFieldType.select:
 			return (
-				<Select onValueChange={props.handleSelect}>
+				<Select
+					onValueChange={(value) => {
+						field.onChange(value); // ✅ Updates form state
+						props.handleSelect?.(value); // ✅ Optional custom side effect
+					}}
+				>
 					<SelectTrigger className="w-full">
 						<SelectValue placeholder={props.placeholder} />
 					</SelectTrigger>

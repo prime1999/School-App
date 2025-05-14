@@ -1,12 +1,6 @@
 import { z } from "zod";
 
 export const StudenFormSchema = z.object({
-	MatricNumber: z.coerce
-		.number({
-			required_error: "Matric number is required",
-		})
-		.min(100000, "Invalid Matric Number")
-		.max(999999, "Invalid Matric Number"),
 	name: z
 		.string()
 		.min(2, "Name must be at least 2 characters")
@@ -17,16 +11,10 @@ export const StudenFormSchema = z.object({
 		.refine((phone) => /^\+\d{10,15}$/.test(phone), "Invalid phone number"),
 	gender: z.enum(["Male", "Female"]),
 
-	faculty: z.string().min(2, "Invalid Faculty").max(500, "Invalid Faculty"),
-	department: z
-		.string()
-		.min(2, "Invalid department")
-		.max(500, "Invalid department"),
-	school: z.string().min(2, "Invalid school").max(500, "Invalid school"),
-	level: z.coerce
-		.number({ required_error: "Level is required" })
-		.min(100, "Invalid Level")
-		.max(999, "Invalid Level"),
+	faculty: z.string({ required_error: "Invalid Faculty" }),
+	department: z.string({ required_error: "Invalid Department" }),
+	school: z.string({ required_error: "Invalid School name" }),
+	level: z.string({ required_error: "Studies Level required" }),
 });
 
 export const CreateUserSchema = z.object({

@@ -28,14 +28,13 @@ const StudentForm = () => {
 	const form = useForm<z.infer<typeof StudenFormSchema>>({
 		resolver: zodResolver(StudenFormSchema),
 		defaultValues: {
-			MatricNumber: "" as any,
 			email: "",
 			name: "",
 			phone: "",
 			school: "",
 			faculty: "",
 			department: "",
-			level: "" as any,
+			level: "",
 			gender: "Male" as Gender,
 		},
 	});
@@ -45,12 +44,14 @@ const StudentForm = () => {
 		setdepartments(departments);
 	};
 
-	const onSubmit = () => {};
+	const onSubmitForm = (values: z.infer<typeof StudenFormSchema>) => {
+		console.log({ values });
+	};
 	return (
 		<main className="">
 			<Form {...form}>
 				<form
-					onSubmit={form.handleSubmit(onSubmit)}
+					onSubmit={form.handleSubmit(onSubmitForm)}
 					className="space-y-6 w-full mx-auto"
 				>
 					<h1>Personal Information</h1>
