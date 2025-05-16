@@ -1,5 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getCurrentStudent } from "../actions/Student.actions";
+import {
+	getCurrentStudent,
+	UpdateStudentInfo,
+} from "../actions/Student.actions";
 
 type initialType = {
 	isLoading: boolean;
@@ -26,6 +29,7 @@ export const getCurrentUser = createAsyncThunk(
 					email: user.Email,
 					matricNumber: user.MatricNumber,
 				};
+				console.log(student);
 				return student;
 			}
 			return null;
@@ -35,6 +39,21 @@ export const getCurrentUser = createAsyncThunk(
 	}
 );
 
+// store function to get the current user
+export const UpdateUser = createAsyncThunk(
+	"student/updateUser",
+	async (DataToUpdate: any, thunkAPI: any) => {
+		try {
+			const data: any = await UpdateStudentInfo(DataToUpdate);
+			if (data) {
+				return data;
+			}
+			return null;
+		} catch (error) {
+			console.log(error);
+		}
+	}
+);
 export const StudentSlice = createSlice({
 	name: "student",
 	initialState,

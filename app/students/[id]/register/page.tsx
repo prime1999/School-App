@@ -7,17 +7,30 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { getCurrentUser } from "@/lib/slice/StudentSlice";
+import { useRouter } from "next/navigation";
 
 const page = () => {
+	const router = useRouter();
 	const dispatch = useDispatch<AppDispatch>();
 	const pathname = usePathname();
-	console.log(pathname);
+	// get the pathname from the current url
 	const paths = pathname.split("/");
-	console.log(paths[2]);
 
 	useEffect(() => {
-		const student = dispatch(getCurrentUser(paths[2]));
-		console.log(student);
+		// function to check if the user has created an account
+		const handleLoad = async () => {
+			try {
+				const student = await dispatch(getCurrentUser(paths[2])).unwrap();
+				// if not then redirect back to the register page
+				if (!student?.email || !student?.matricNumber) {
+					router.push("/");
+				}
+			} catch (error) {
+				console.error("Failed to load user:", error);
+			}
+		};
+
+		handleLoad();
 	}, []);
 	return (
 		<main className="flex justify-center items-center h-[100vh] w-[100vw]">

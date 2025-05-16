@@ -9,7 +9,6 @@ const databases = new Databases(client);
 // appwrite function to add a user to appwrite auth
 export const createAppwriteUser = async (userData: any) => {
 	try {
-		console.log(userData);
 		// create a user auth on Appwrite
 		const user = await account.create(
 			ID.unique(),
@@ -17,11 +16,17 @@ export const createAppwriteUser = async (userData: any) => {
 			userData.email,
 			userData.password
 		);
-		const userDoc = await createAppwriteuserDocument({
-			MatricNumber: userData.MatricNumber.toString(),
-			Email: userData.email,
-		});
-		return userDoc;
+		if (user) {
+			// create a session for the user
+			await createuserAppwriteSession(userData);
+			// create the user document in the DB
+			const userDoc = await createAppwriteuserDocument({
+				MatricNumber: userData.MatricNumber.toString(),
+				Email: userData.email,
+			});
+
+			return userDoc;
+		}
 	} catch (error) {
 		// check if the error is a user already exist error
 		if (error && error === 409) {
@@ -34,9 +39,24 @@ export const createAppwriteUser = async (userData: any) => {
 	}
 };
 
+// function to create a session for a created user on Appwrite
+export const createuserAppwriteSession = async (userdata: any) => {
+	try {
+		const res = await account.createEmailPasswordSession(
+			userdata.email,
+			userdata.password
+		);
+
+		return res;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
 // function to create the user document in appwrite collection
 export const createAppwriteuserDocument = async (userDocData: any) => {
 	try {
+		console.log(JSON.stringify({ ...userDocData }));
 		// create the document for the student created with the (email & matric-number)
 		const userDoc = await databases.createDocument(
 			DBID,
@@ -44,7 +64,7 @@ export const createAppwriteuserDocument = async (userDocData: any) => {
 			ID.unique(),
 			JSON.stringify({ ...userDocData })
 		);
-		console.log(userDoc);
+
 		return userDoc;
 	} catch (error) {
 		console.log(error);
@@ -55,11 +75,24 @@ export const createAppwriteuserDocument = async (userDocData: any) => {
 // function to get a student based on the id from the appwrite collection
 export const getCurrentStudent = async (userID: string) => {
 	try {
-		console.log(userID);
 		// get the student from the DB
 		const currentStudent = await databases.getDocument(DBID, STUDENTID, userID);
-		console.log(currentStudent);
 		return currentStudent;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+// function to update the student info on appwrite
+export const UpdateStudentInfo = async (DataToUpdate: any) => {
+	try {
+		const { docId, ...data } = DataToUpdate;
+		const resData = await databases.updateDocument(
+			DBID,
+			STUDENTID,
+			docId,
+			data
+		);
 	} catch (error) {
 		console.log(error);
 	}

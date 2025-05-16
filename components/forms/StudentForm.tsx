@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { usePathname, useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -16,12 +17,20 @@ import { departmentsByFaculty, facultyNames } from "@/contants/Faculties.info";
 import { levels, Universities } from "@/contants/Schools.info";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { Label } from "../ui/label";
+import { AppDispatch } from "@/lib/store";
+import { UpdateUser } from "@/lib/slice/StudentSlice";
 
 declare type Gender = "Male" | "Female";
 
 const GenderOptions = ["Male", "Female"];
 
+//TODO
+//Later add the full list of universities when the app goes pass UI alone
+
 const StudentForm = () => {
+	const router = useRouter();
+	const dispatch = useDispatch<AppDispatch>();
+	const [pathId, setPathId] = useState<string>("");
 	const [faculties, setFaculties] = useState<any>(facultyNames);
 	const [departments, setdepartments] = useState<any>(null);
 	const [Level, setLevel] = useState<{}[]>(levels);
@@ -39,24 +48,47 @@ const StudentForm = () => {
 			faculty: "",
 			department: "",
 			level: "",
-			gender: "Male" as Gender,
+			gender: "" as Gender,
 		},
 	});
+
+	// to get the student doculment ID from the url
+	const pathname = usePathname();
+	const paths = pathname.split("/");
 
 	useEffect(() => {
 		if (student && student.email) {
 			form.reset({
 				email: student.email,
 			});
+			// save the pathname to the state
+			setPathId(paths[2]);
 		}
 	}, [student]);
+
 	const handleSelect = (value: string) => {
 		const departments = departmentsByFaculty[value];
 		setdepartments(departments);
 	};
 
-	const onSubmitForm = (values: z.infer<typeof StudenFormSchema>) => {
-		console.log({ values });
+	const onSubmitForm = async (values: z.infer<typeof StudenFormSchema>) => {
+		const DataToUpdate = {
+			docId: pathId,
+			name: values.name,
+			school: values.school,
+			faculty: values.faculty,
+			department: values.department,
+			PhoneNumber: values.phone.toString(),
+			level: values.level,
+			Gender: values.gender,
+		};
+		// dispatch the funcion to update the user in the appwrite
+		const resData = await dispatch(UpdateUser(DataToUpdate));
+		console.log(resData);
+		// if the process is successful then redirect to the dashboard page
+		if (resData) {
+			router.push(`/students/${pathId as any}/dashboard`);
+		}
 	};
 	return (
 		<main className="">
@@ -106,7 +138,9 @@ const StudentForm = () => {
 						fieldType={FormFieldType.select}
 						control={form.control}
 						name="school"
-						array={Universities}
+						array={[
+							{ name: "University of Ibadan", value: "University of Ibadan" },
+						]}
 						label="School"
 						handleSelect={handleSelect}
 						placeholder="school"
@@ -146,6 +180,7 @@ const StudentForm = () => {
 								control={form.control}
 								name="gender"
 								label="Gender"
+								disabled={true}
 								renderSkeleton={(field) => (
 									<FormControl>
 										<RadioGroup
