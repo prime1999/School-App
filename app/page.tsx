@@ -1,6 +1,7 @@
 import CreateUserForm from "@/components/forms/CreateUserForm";
 import Logo from "@/components/Logo";
 import Image from "next/image";
+import Link from "next/link";
 
 const page = () => {
 	return (
@@ -17,7 +18,16 @@ const page = () => {
 						</div>
 						<CreateUserForm />
 					</div>
-					<p className="text-xs font-inter text-gray-400 font-semibold mt-8">
+					<div className="flex justify-center items-center gap-2 text-sm mt-4 font-inter">
+						<h4>Already have an Account?</h4>
+						<Link
+							href="/"
+							className="font-bold duration-500 hover:text-green-500"
+						>
+							Log-In
+						</Link>
+					</div>
+					<p className="text-xs font-inter text-center text-gray-400 font-bold mt-4">
 						©timelycopyright
 					</p>
 				</div>

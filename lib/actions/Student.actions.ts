@@ -12,7 +12,6 @@ export const createAppwriteUser = async (userData: any) => {
 		// create a user auth on Appwrite
 		const user = await account.create(
 			ID.unique(),
-			//userData.matricNumber,
 			userData.email,
 			userData.password
 		);
@@ -20,12 +19,17 @@ export const createAppwriteUser = async (userData: any) => {
 			// create a session for the user
 			await createuserAppwriteSession(userData);
 			// create the user document in the DB
-			const userDoc = await createAppwriteuserDocument({
-				MatricNumber: userData.MatricNumber.toString(),
-				Email: userData.email,
-			});
-
-			return userDoc;
+			const session = await checkCurrentSession();
+			console.log(session);
+			// if a session exist
+			if (session) {
+				const userDoc = await createAppwriteuserDocument({
+					userId: session.$id,
+					MatricNumber: userData.MatricNumber.toString(),
+					Email: userData.email,
+				});
+				return userDoc;
+			}
 		}
 	} catch (error) {
 		// check if the error is a user already exist error
@@ -93,6 +97,17 @@ export const UpdateStudentInfo = async (DataToUpdate: any) => {
 			docId,
 			data
 		);
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+// function to check for the current session in the database
+export const checkCurrentSession = async () => {
+	try {
+		const resData = await account.get();
+		console.log(resData);
+		return resData;
 	} catch (error) {
 		console.log(error);
 	}

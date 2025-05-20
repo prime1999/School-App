@@ -1,5 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { createAppwriteUser } from "../actions/Student.actions";
+import {
+	checkCurrentSession,
+	createAppwriteUser,
+} from "../actions/Student.actions";
 
 type initType = {
 	student: any | null;
@@ -58,6 +61,50 @@ export const createUser = createAsyncThunk(
 	}
 );
 
+// store function to authenticate a user
+export const authUser = createAsyncThunk(
+	"auth/authStudent",
+	async (userData: any, thunkAPI) => {
+		try {
+			// paa the user data to the function that will send it to appwrite
+			const studentRes: any = await createAppwriteUser(userData);
+			console.log(studentRes);
+			// if positive res was gotten, then
+			if (studentRes.$id) {
+				const student = {
+					id: studentRes.$id,
+					email: studentRes.email,
+					MatricNumber: studentRes.MatricNumber,
+				};
+				// return the response after formatting the the response
+				return {
+					isAuthenticated: true,
+					student,
+				};
+			}
+			// else return a false response
+			return { isAuthenticated: false, student: null };
+		} catch (error) {
+			console.log(error);
+			return error;
+		}
+	}
+);
+
+// get the current logged in user
+export const getCurrentSession = createAsyncThunk(
+	"auth/getSession",
+	async () => {
+		try {
+			const currentSession = await checkCurrentSession();
+			console.log(currentSession);
+			return currentSession;
+		} catch (error) {
+			console.log(error);
+		}
+	}
+);
+
 export const AuthSlice = createSlice({
 	name: "auth",
 	initialState,
@@ -78,6 +125,19 @@ export const AuthSlice = createSlice({
 				state.student = action.payload.student;
 			})
 			.addCase(createUser.rejected, (state, action: any) => {
+				state.isLoading = false;
+				state.student = action.payload.student;
+				state.isAuthenticated = action.payload.isAuthenticated;
+			})
+			.addCase(authUser.pending, (state) => {
+				state.isLoading = true;
+			})
+			.addCase(authUser.fulfilled, (state, action: any) => {
+				state.isLoading = false;
+				state.isAuthenticated = action.payload.isAuthenticated as any;
+				state.student = action.payload.student;
+			})
+			.addCase(authUser.rejected, (state, action: any) => {
 				state.isLoading = false;
 				state.student = action.payload.student;
 				state.isAuthenticated = action.payload.isAuthenticated;

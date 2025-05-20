@@ -32,3 +32,17 @@ export const CreateUserSchema = z.object({
 			message: "Password must contain letters and at least one number",
 		}),
 });
+export const UserSchema = z.object({
+	MatricNumber: z.coerce
+		.number({
+			required_error: "Matric number is required",
+		})
+		.min(100000, "Invalid Matric Number")
+		.max(999999, "Invalid Matric Number"),
+	password: z
+		.string()
+		.min(6, "Password must be at least 6 characters")
+		.regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/, {
+			message: "Password must contain letters and at least one number",
+		}),
+});
