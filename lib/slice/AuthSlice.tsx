@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
 	checkCurrentSession,
 	createAppwriteUser,
+	createuserAppwriteSession,
 } from "../actions/Student.actions";
 
 type initType = {
@@ -67,7 +68,7 @@ export const authUser = createAsyncThunk(
 	async (userData: any, thunkAPI) => {
 		try {
 			// paa the user data to the function that will send it to appwrite
-			const studentRes: any = await createAppwriteUser(userData);
+			const studentRes: any = await createuserAppwriteSession(userData);
 			console.log(studentRes);
 			// if positive res was gotten, then
 			if (studentRes.$id) {

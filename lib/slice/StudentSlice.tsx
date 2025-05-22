@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
 	getCurrentStudent,
 	UpdateStudentInfo,
+	listDocuments,
 } from "../actions/Student.actions";
 
 type initialType = {
@@ -28,6 +29,7 @@ export const getCurrentUser = createAsyncThunk(
 				const student = {
 					email: user.Email,
 					matricNumber: user.MatricNumber,
+					gender: user.Gender,
 				};
 				console.log(student);
 				return student;
@@ -54,6 +56,21 @@ export const UpdateUser = createAsyncThunk(
 		}
 	}
 );
+
+// function to get documents based on a query (matricNumber)
+export const getDocuments = createAsyncThunk(
+	"student/listDocument",
+	async (matricNumber: string, thunkAPI: any) => {
+		try {
+			console.log(matricNumber);
+			const res = await listDocuments(matricNumber);
+			return res;
+		} catch (error) {
+			console.log(error);
+		}
+	}
+);
+
 export const StudentSlice = createSlice({
 	name: "student",
 	initialState,

@@ -1,4 +1,4 @@
-import { Account, Databases, ID } from "appwrite";
+import { Account, Databases, ID, Query } from "appwrite";
 import client from "../appwrite.config";
 import { DBID, STUDENTID } from "@/contants/env.file";
 
@@ -46,11 +46,11 @@ export const createAppwriteUser = async (userData: any) => {
 // function to create a session for a created user on Appwrite
 export const createuserAppwriteSession = async (userdata: any) => {
 	try {
+		// create a session using the email ans password
 		const res = await account.createEmailPasswordSession(
 			userdata.email,
 			userdata.password
 		);
-
 		return res;
 	} catch (error) {
 		console.log(error);
@@ -65,8 +65,11 @@ export const createAppwriteuserDocument = async (userDocData: any) => {
 		const userDoc = await databases.createDocument(
 			DBID,
 			STUDENTID,
-			ID.unique(),
-			JSON.stringify({ ...userDocData })
+			userDocData.userId,
+			JSON.stringify({
+				Email: userDocData.Email,
+				MatricNumber: userDocData.MatricNumber,
+			})
 		);
 
 		return userDoc;
@@ -79,8 +82,10 @@ export const createAppwriteuserDocument = async (userDocData: any) => {
 // function to get a student based on the id from the appwrite collection
 export const getCurrentStudent = async (userID: string) => {
 	try {
+		await checkCurrentSession();
 		// get the student from the DB
 		const currentStudent = await databases.getDocument(DBID, STUDENTID, userID);
+		console.log(currentStudent);
 		return currentStudent;
 	} catch (error) {
 		console.log(error);
@@ -105,9 +110,25 @@ export const UpdateStudentInfo = async (DataToUpdate: any) => {
 // function to check for the current session in the database
 export const checkCurrentSession = async () => {
 	try {
+		// get the current session if any
 		const resData = await account.get();
 		console.log(resData);
 		return resData;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+// function to list documents based on a query (matricNumber) in appwrite
+export const listDocuments = async (matricNumber: string) => {
+	try {
+		console.log(matricNumber);
+		// get the documents that fit the query
+		const resDoc = await databases.listDocuments(DBID, STUDENTID, [
+			Query.equal("MatricNumber", matricNumber.toString()),
+		]);
+		console.log(resDoc);
+		return resDoc;
 	} catch (error) {
 		console.log(error);
 	}

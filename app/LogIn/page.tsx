@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Toaster } from "@/components/ui/sonner";
+import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -15,8 +17,9 @@ import SubmitButton from "@/lib/utils/SubmitButton";
 import Logo from "@/components/Logo";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
-import { getCurrentSession } from "@/lib/slice/AuthSlice";
+import { authUser, getCurrentSession } from "@/lib/slice/AuthSlice";
 import { useRouter } from "next/navigation";
+import { getDocuments } from "@/lib/slice/StudentSlice";
 
 const page = () => {
 	const dispatch = useDispatch<AppDispatch>();
@@ -34,11 +37,12 @@ const page = () => {
 		const checkSession = async () => {
 			try {
 				const session = await dispatch(getCurrentSession()).unwrap();
-				console.log(session);
-				// if no session
-				// if (session && session.status == true) {
-				// 	router.push("/");
-				// }
+				console.log(session && session.$id);
+				// if a session already exists
+				if (session && session.status == true) {
+					// redirect the student to his/her dashboard
+					router.push(`/students/${session.$id}/dashboard`);
+				}
 			} catch (error) {
 				console.log(error);
 			}
@@ -51,7 +55,34 @@ const page = () => {
 		setShowPassword(() => !showPassword);
 	};
 
-	const onSubmit = () => {};
+	// function to handle the form submittion
+	const onSubmit = async (values: z.infer<any>) => {
+		try {
+			// function to check if the matric number has already created an account
+			const res = await dispatch(getDocuments(values.MatricNumber)).unwrap();
+			console.log(res);
+			if (res && res.documents) {
+				// get the email from the document and also the password from the form values
+				const userData = {
+					email: res.documents[0].Email,
+					password: values.password,
+				};
+				// dispatch the function to authenticate the user
+				const logInRes = (await dispatch(authUser(userData))) as any;
+				console.log(logInRes && logInRes?.payload?.student?.id);
+				// redirect the user if the authentication is successful
+				if (logInRes && logInRes.payload?.student?.id) {
+					router.push(`students/${logInRes?.payload?.student?.id}/dashboard`);
+				}
+			}
+			// TODO
+		} catch (error) {
+			toast.error("Wrong User Credentials", {
+				style: { border: "red" },
+			});
+			console.log(error);
+		}
+	};
 	return (
 		<main className="w-full h-[100vh] flex items-center justify-center">
 			<div className="relative w-[400px] border border-gray-800 rounded-lg px-6 pb-12 pt-24 overflow-hidden">
@@ -115,6 +146,7 @@ const page = () => {
 					©timelycopyright
 				</p>
 			</div>
+			<Toaster />
 		</main>
 	);
 };

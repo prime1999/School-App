@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -56,6 +57,9 @@ const CreateUserForm = () => {
 			}
 			console.log(newUser);
 		} catch (error) {
+			toast.error("Please try again", {
+				style: { border: "red" },
+			});
 			console.log(error);
 		}
 	};
