@@ -5,6 +5,7 @@ import {
 } from "react-icons/md";
 import { PiClockCountdownFill } from "react-icons/pi";
 import { FaCirclePlus } from "react-icons/fa6";
+import { PiNotepadFill } from "react-icons/pi";
 
 // schedule slide
 export const Schedule = () => {
@@ -12,7 +13,7 @@ export const Schedule = () => {
 		<div className="w-full h-full p-4 bg-gray-900">
 			<div className="flex justify-between items-center">
 				<h4 className="font-inter font-semibold text-md">Schedule</h4>
-				<MdOutlineSchedule className="text-md text-green-400 font-semibold" />
+				<PiNotepadFill className="text-md text-green-400 font-semibold" />
 			</div>
 			<p className="text-xs font-inter text-slate-300 mt-4">
 				{/* TODO  show next course on the time-table*/}Your next course will

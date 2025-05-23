@@ -3,6 +3,7 @@ import { Big_Shoulders_Stencil_Text, Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Providers } from "@/lib/Provider";
+import MobileNav from "@/components/MobileNav";
 
 const bigShoulder = Big_Shoulders_Stencil_Text({
 	variable: "--font-big-shoulder-stencil",
@@ -33,6 +34,7 @@ export default function RootLayout({
 				>
 					<ThemeProvider attribute="class" defaultTheme="dark">
 						{children}
+						<MobileNav />
 					</ThemeProvider>
 				</body>
 			</Providers>
