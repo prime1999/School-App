@@ -40,14 +40,14 @@ const Navbar = () => {
 					<FaBell className="text-green-400 text-2xl w-12 cursor-pointer" />
 				</div>
 			</div>
-			<div className="relative">
+			{/* <div className="relative">
 				<Input
 					type="text"
 					placeholder="Search..."
 					className="border border-slate-500 rounded-md p-2 w-full pl-8"
 				/>
 				<FaSearch className="absolute top-3 left-3 text-green-300" />
-			</div>
+			</div> */}
 		</nav>
 	);
 };

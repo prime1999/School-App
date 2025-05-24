@@ -3,6 +3,7 @@ import {
 	getCurrentStudent,
 	UpdateStudentInfo,
 	listDocuments,
+	getFacultyTimeTable,
 } from "../actions/Student.actions";
 
 type initialType = {
@@ -67,6 +68,21 @@ export const getDocuments = createAsyncThunk(
 			return res;
 		} catch (error) {
 			console.log(error);
+		}
+	}
+);
+
+// function to get the faculty time-table of the curent user
+export const getFacultyTable = createAsyncThunk(
+	"student/getFacultytable",
+	async (userId: string, thunkAPI: any) => {
+		try {
+			const res = await getFacultyTimeTable(userId);
+			console.log(res);
+			return res;
+		} catch (error) {
+			console.log(error);
+			return error;
 		}
 	}
 );

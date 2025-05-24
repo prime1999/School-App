@@ -1,6 +1,6 @@
 import { Account, Databases, ID, Query } from "appwrite";
 import client from "../appwrite.config";
-import { DBID, STUDENTID } from "@/contants/env.file";
+import { DBID, STUDENTID, TIME_TABLE_ID } from "@/contants/env.file";
 
 const account = new Account(client);
 
@@ -112,7 +112,6 @@ export const checkCurrentSession = async () => {
 	try {
 		// get the current session if any
 		const resData = await account.get();
-		console.log(resData);
 		return resData;
 	} catch (error) {
 		console.log(error);
@@ -129,6 +128,25 @@ export const listDocuments = async (matricNumber: string) => {
 		]);
 		console.log(resDoc);
 		return resDoc;
+	} catch (error) {
+		console.log(error);
+	}
+};
+
+// function to get the faculty time-table of a student
+export const getFacultyTimeTable = async (userId: string) => {
+	try {
+		// get the users documents
+		const resDoc = await databases.getDocument(DBID, STUDENTID, userId);
+		console.log(resDoc);
+		if (resDoc && resDoc.$id) {
+			const resTable = await databases.listDocuments(DBID, TIME_TABLE_ID, [
+				Query.equal("type", "faculty"),
+				Query.equal("part", resDoc.faculty),
+			]);
+			console.log(resTable);
+			return resTable;
+		}
 	} catch (error) {
 		console.log(error);
 	}

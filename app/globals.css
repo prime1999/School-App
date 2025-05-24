@@ -114,10 +114,10 @@
 
 @layer base {
 	* {
-		@apply border-border outline-ring/50;
+		@apply border-border outline-ring/50 m-0 p-0;
 	}
 	body {
-		@apply bg-background text-foreground overflow-hidden p-0 m-0 box-border h-[100vh];
+		@apply bg-background text-foreground p-0 m-0 box-border h-[100vh];
 	}
 	
 }
@@ -209,6 +209,27 @@
   .scrollable-div::-webkit-scrollbar-thumb:hover {
 	background: #02a312; /* on hover */
   }
+
+  .table-loader {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  border: 6px solid;
+  border-color: rgb(1, 100, 24) rgb(3, 162, 27) rgb(3, 111, 17) rgba(3, 145, 17, 0.639);
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} 
   
 
   

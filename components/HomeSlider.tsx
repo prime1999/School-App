@@ -195,7 +195,7 @@ const HomeSlider = () => {
 	};
 
 	return (
-		<section>
+		<section className="lg:hidden">
 			<div className="flex items-center justify-between gap-4 overflow-x-auto mt-12 no-scrollbar w-full relative">
 				{array.map((li, i) => (
 					<div
