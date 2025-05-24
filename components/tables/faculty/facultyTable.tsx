@@ -20,11 +20,11 @@ const FacultyTable = () => {
 	useEffect(() => {
 		const getTableData = async () => {
 			try {
+				// call the dispatch function to get the faculty time-table details form the DB
 				const res: any = await dispatch(getFacultyTable(paths[2])).unwrap();
-				console.log(res);
-				console.log(res.documents[0].table);
+				// get the stringified table form the DB and parse it to an array
 				const table = JSON.parse(JSON.parse(res.documents[0].table));
-				console.log(table);
+				// set the table data
 				const data = table.map((slot: any) => ({
 					time: slot.time,
 					Monday: slot.Monday,
@@ -33,7 +33,7 @@ const FacultyTable = () => {
 					Thursday: slot.Thursday,
 					Friday: slot.Friday,
 				}));
-				console.log(data);
+
 				setTable(data);
 			} catch (error) {
 				console.log(error);
