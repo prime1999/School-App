@@ -21,7 +21,7 @@ const page = () => {
 					<div className="flex justify-center items-center gap-2 text-sm mt-4 font-inter">
 						<h4>Already have an Account?</h4>
 						<Link
-							href="/"
+							href="/logIn"
 							className="font-bold duration-500 hover:text-green-500"
 						>
 							Log-In
