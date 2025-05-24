@@ -1,7 +1,7 @@
-import CreateUserForm from "@/components/forms/CreateUserForm";
-import Logo from "@/components/Logo";
 import Image from "next/image";
 import Link from "next/link";
+import CreateUserForm from "@/components/forms/CreateUserForm";
+import Logo from "@/components/Logo";
 
 const page = () => {
 	return (
@@ -21,7 +21,7 @@ const page = () => {
 					<div className="flex justify-center items-center gap-2 text-sm mt-4 font-inter">
 						<h4>Already have an Account?</h4>
 						<Link
-							href="/logIn"
+							href="/LogIn"
 							className="font-bold duration-500 hover:text-green-500"
 						>
 							Log-In
