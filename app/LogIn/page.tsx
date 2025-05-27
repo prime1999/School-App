@@ -15,7 +15,7 @@ import { MdNumbers } from "react-icons/md";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import SubmitButton from "@/lib/utils/SubmitButton";
 import Logo from "@/components/Logo";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { authUser, getCurrentSession } from "@/lib/slice/AuthSlice";
 import { useRouter } from "next/navigation";
@@ -25,6 +25,7 @@ const page = () => {
 	const dispatch = useDispatch<AppDispatch>();
 	const router = useRouter();
 	const [showPassword, setShowPassword] = useState<boolean>(false);
+	const { isLoading } = useSelector((state: any) => state.auth);
 	const form = useForm<z.infer<typeof UserSchema>>({
 		resolver: zodResolver(UserSchema),
 		defaultValues: {
@@ -126,10 +127,10 @@ const page = () => {
 							iconSrc={showPassword ? <FaEyeSlash /> : <FaEye />}
 						/>
 						<SubmitButton
-							isLoading={false}
+							isLoading={isLoading}
 							className="w-full bg-green-400 text-black rounded-lg font-inter font-bold"
 						>
-							Get Started
+							Get Updated
 						</SubmitButton>
 					</form>
 				</Form>

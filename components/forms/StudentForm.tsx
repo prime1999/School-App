@@ -203,7 +203,7 @@ const StudentForm = () => {
 						</div>
 					</div>
 					<SubmitButton
-						isLoading={false}
+						isLoading={isLoading}
 						className="w-full bg-green-400 text-black rounded-lg font-inter font-bold"
 					>
 						Submit Details

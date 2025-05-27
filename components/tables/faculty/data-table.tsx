@@ -63,11 +63,11 @@ export function DataTable<TData, TValue>({
 					onChange={(event) =>
 						table.getColumn("time")?.setFilterValue(event.target.value)
 					}
-					className="w-[200px]"
+					className="w-[200px] font-inter text-sm font-semibold lg:w-[300px]"
 				/>
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild className="border-none">
-						<button className="text-xs ml-auto py-2 px-4 rounded-lg border border-gray-500 cursor-pointer focus:border-green-500 focus:text-green-500 hover:border-green-500 hover:text-green-500">
+						<button className="text-xs ml-auto py-2 px-4 rounded-lg border border-gray-500 font-inter font-semibold duration-500 cursor-pointer focus:border-green-500 focus:text-green-500 hover:border-green-500 hover:text-green-500 lg:text-lg">
 							Filter days
 						</button>
 					</DropdownMenuTrigger>
@@ -98,7 +98,10 @@ export function DataTable<TData, TValue>({
 						{table.getHeaderGroups().map((headerGroup) => (
 							<TableRow key={headerGroup.id}>
 								{headerGroup.headers.map((header) => (
-									<TableHead key={header.id}>
+									<TableHead
+										key={header.id}
+										className="border border-gray-500 text-center"
+									>
 										{header.isPlaceholder
 											? null
 											: flexRender(

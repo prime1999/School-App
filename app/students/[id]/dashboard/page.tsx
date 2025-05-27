@@ -1,6 +1,7 @@
 import HomeSlider from "@/components/HomeSlider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FacultyTable from "@/components/tables/faculty/facultyTable";
+import { CountDown, Courses } from "@/components/SliderComponents";
 
 const page = () => {
 	return (
@@ -41,7 +42,7 @@ const page = () => {
 				</div>
 			</div>
 			<HomeSlider />
-			<div className="w-11/12 mx-auto">
+			<div className="w-11/12 mx-auto lg:hidden">
 				<Tabs defaultValue="faculty" className="">
 					<TabsList>
 						<TabsTrigger value="faculty">Faculty</TabsTrigger>
@@ -54,6 +55,27 @@ const page = () => {
 						Make changes to your account here.
 					</TabsContent>
 				</Tabs>
+			</div>
+			<div className="hidden w-11/12 mx-auto mt-12 grid-cols-4 lg:grid">
+				<div className="col-span-3">
+					<div className="flex items-center gap-4 mb-8">
+						<Courses />
+						<CountDown />
+					</div>{" "}
+					<Tabs defaultValue="faculty">
+						<TabsList>
+							<TabsTrigger value="faculty">Faculty</TabsTrigger>
+							<TabsTrigger value="department">Department</TabsTrigger>
+						</TabsList>
+						<TabsContent value="faculty">
+							<FacultyTable />
+						</TabsContent>
+						<TabsContent value="department">
+							Make changes to your account here.
+						</TabsContent>
+					</Tabs>
+				</div>
+				<div className="col-span-1">afs</div>
 			</div>
 		</main>
 	);

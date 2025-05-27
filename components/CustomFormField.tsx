@@ -47,9 +47,11 @@ interface CustomProps {
 	class?: string;
 	handleSelect?: any;
 	disabled?: boolean;
+	className?: string;
 }
 
 const RenderInput = ({ props, field }: { props: CustomProps; field: any }) => {
+	console.log(props.array);
 	switch (props.fieldType) {
 		case FormFieldType.input:
 			return (
@@ -74,7 +76,7 @@ const RenderInput = ({ props, field }: { props: CustomProps; field: any }) => {
 							{...field}
 							inputMode={props.inputMode}
 							disabled={props.disabled}
-							className="shad-input border-1 pl-8"
+							className={`shad-input border-1 pl-8 ${props.className}`}
 						/>
 					</FormControl>
 				</div>
@@ -101,12 +103,16 @@ const RenderInput = ({ props, field }: { props: CustomProps; field: any }) => {
 						props.handleSelect?.(value); // ✅ Optional custom side effect
 					}}
 				>
-					<SelectTrigger className="w-full">
+					<SelectTrigger className={`w-full ${props.className}`}>
 						<SelectValue placeholder={props.placeholder} />
 					</SelectTrigger>
 					<SelectContent>
 						{props.array?.map((list: any, i: number) => (
-							<SelectItem key={i} value={list.value}>
+							<SelectItem
+								key={i}
+								value={list.value}
+								className="cursor-pointer hover:bg-green-100 dark:hover:bg-green-800"
+							>
 								{list.name}
 							</SelectItem>
 						))}
@@ -130,7 +136,7 @@ const CustomFormField = (props: CustomProps) => {
 				render={({ field }) => (
 					<FormItem>
 						{props.fieldType !== FormFieldType.checkbox && label && (
-							<FormLabel className="shad-input-label font-inter text-sm text-gray-300 font-semibold">
+							<FormLabel className="shad-input-label font-inter text-sm font-semibold">
 								{label}
 							</FormLabel>
 						)}

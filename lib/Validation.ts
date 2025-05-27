@@ -32,6 +32,7 @@ export const CreateUserSchema = z.object({
 			message: "Password must contain letters and at least one number",
 		}),
 });
+
 export const UserSchema = z.object({
 	MatricNumber: z.coerce
 		.number({
@@ -45,4 +46,18 @@ export const UserSchema = z.object({
 		.regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/, {
 			message: "Password must contain letters and at least one number",
 		}),
+});
+
+export const courseSchema = z.object({
+	courseCode: z
+		.string({ required_error: "course code required" })
+		.min(4, "Course code is always at least 4 characters")
+		.regex(/^[A-Za-z\-]+\s?[0-9]{3}$/, { message: "Course code invalid" }),
+	courseTitle: z.string(),
+	courseUnit: z.number({ required_error: "Unit is required" }),
+	lecturer: z.string(),
+	venue: z.string(),
+	days: z.string(),
+	startTime: z.string(),
+	endTime: z.string(),
 });

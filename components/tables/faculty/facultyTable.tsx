@@ -42,7 +42,7 @@ const FacultyTable = () => {
 		getTableData();
 	}, []);
 	return (
-		<main className="mb-8 pb-16">
+		<main className="pb-8">
 			<DataTable columns={columns} data={table} />
 		</main>
 	);
