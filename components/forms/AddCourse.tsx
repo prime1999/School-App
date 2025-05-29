@@ -2,6 +2,9 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { usePathname } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/lib/store";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
@@ -10,6 +13,8 @@ import { MdNumbers, MdTextFields, MdOutlineLocationOn } from "react-icons/md";
 import DayAndTime from "../DayAndTime";
 import { useState } from "react";
 import SubmitButton from "@/lib/utils/SubmitButton";
+import { registerCourse } from "@/lib/slice/CourseSlice";
+import { formatScheduleTime } from "@/lib/utils/helperFunctions/TimeFormater";
 
 const days = [
 	{ name: "Monday", value: "monday" },
@@ -20,6 +25,10 @@ const days = [
 ];
 
 const AddCourse = () => {
+	const dispatch = useDispatch<AppDispatch>();
+	const pathname = usePathname();
+	// get the pathname from the current url
+	const paths = pathname.split("/");
 	const [startDate, setStartDate] = useState<any>(new Date());
 	const [endDate, setEndDate] = useState<any>(new Date());
 	const [day, setDay] = useState<string>("");
@@ -42,12 +51,14 @@ const AddCourse = () => {
 	};
 	const handleSetDate = (e: any) => {
 		e.preventDefault();
+		console.log(123);
 		const newSchedule = {
 			day,
-			startDate,
-			endDate,
+			startDate: formatScheduleTime(startDate),
+			endDate: formatScheduleTime(endDate),
 		};
-		setSchedule((prev: any) => [...prev, newSchedule]);
+		if (day !== "" && startDate !== "" && endDate !== "")
+			setSchedule((prev: any) => [...prev, newSchedule]);
 	};
 
 	const removeSchedule = (day: string, startDate: string, endDate: string) => {
@@ -62,7 +73,25 @@ const AddCourse = () => {
 		setSchedule(filteredSchedule);
 	};
 
-	const onSubmit = async (values: z.infer<any>) => {};
+	const onSubmit = async (values: z.infer<any>) => {
+		try {
+			console.log(typeof values.courseUnit);
+			const courseData = {
+				userId: paths[2],
+				courseCode: values.courseCode,
+				courseTitle: values.courseTitle,
+				unit: values.courseUnit,
+				venue: values.venue,
+				lecturer: values.lecturer,
+				schedule,
+			};
+			console.log(courseData);
+			const res = await dispatch(registerCourse(courseData)).unwrap();
+			console.log(res);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	return (
 		<main>
 			<h4 className="mt-8 font-inter">
@@ -97,7 +126,7 @@ const AddCourse = () => {
 						<CustomFormField
 							fieldType={FormFieldType.input}
 							control={form.control}
-							name="unit"
+							name="courseUnit"
 							label="Course-Unit"
 							placeholder="course unit"
 							type="number"
@@ -137,15 +166,15 @@ const AddCourse = () => {
 							schedule={schedule}
 							removeSchedule={removeSchedule}
 						/>
+						<SubmitButton
+							isLoading={false}
+							className="w-1/2 mx-auto flex justify-center mt-4 bg-green-400 text-black rounded-lg font-inter font-bold"
+						>
+							Add Course
+						</SubmitButton>
 					</form>
 				</Form>
 			</div>
-			<SubmitButton
-				isLoading={false}
-				className="w-1/2 mx-auto flex justify-center mt-4 bg-green-400 text-black rounded-lg font-inter font-bold"
-			>
-				Add Course
-			</SubmitButton>
 		</main>
 	);
 };

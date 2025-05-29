@@ -8,6 +8,8 @@ const TIME_TABLE_ID = process.env
 const NOTEID = process.env.NEXT_PUBLIC_NOTE_COLLECTION_ID as string;
 const EXAM_SCHEDULE_ID = process.env
 	.NEXT_PUBLIC_EXAM_SCHEDULE_COLLECTION_ID as string;
+const USER_COURSE_ID = process.env.NEXT_PUBLIC_USER_COURSE_ID as string;
+const COURSES_ID = process.env.NEXT_PUBLIC_COURSES_ID as string;
 
 export {
 	ENDPOINT,
@@ -18,4 +20,6 @@ export {
 	TIME_TABLE_ID,
 	NOTEID,
 	EXAM_SCHEDULE_ID,
+	USER_COURSE_ID,
+	COURSES_ID,
 };

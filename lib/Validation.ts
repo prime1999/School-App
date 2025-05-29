@@ -53,8 +53,8 @@ export const courseSchema = z.object({
 		.string({ required_error: "course code required" })
 		.min(4, "Course code is always at least 4 characters")
 		.regex(/^[A-Za-z\-]+\s?[0-9]{3}$/, { message: "Course code invalid" }),
-	courseTitle: z.string(),
-	courseUnit: z.number({ required_error: "Unit is required" }),
+	courseTitle: z.string({ required_error: "Course title is required" }),
+	courseUnit: z.coerce.number({ required_error: "Unit is required" }),
 	lecturer: z.string(),
 	venue: z.string(),
 	days: z.string(),

@@ -21,10 +21,6 @@ const DayAndTime = ({ ...props }: any) => {
 	const secondRef = useRef<HTMLInputElement>(null);
 	const periodRef = useRef<HTMLButtonElement>(null);
 
-	useEffect(() => {
-		console.log(formatScheduleTime(new Date()));
-	}, [props.startDate, props.endDate, props.day]);
-
 	return (
 		<div>
 			<div className="flex gap-2 items-start">
@@ -127,9 +123,7 @@ const DayAndTime = ({ ...props }: any) => {
 								<h6>{list.day}</h6>
 							</div>
 							<div>
-								<p>{`${formatScheduleTime(
-									list.startDate
-								)} - ${formatScheduleTime(list.endDate)}`}</p>
+								<p>{`${list.startDate} - ${list.endDate}`}</p>
 							</div>
 							<span
 								onClick={() =>

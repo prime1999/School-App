@@ -21,7 +21,7 @@ const Navbar = () => {
 	const dispatch = useDispatch<AppDispatch>();
 	const router = useRouter();
 	const { isLoading, student } = useSelector((state: any) => state.student);
-	console.log(student);
+
 	const pathname = usePathname();
 	// get the pathname from the current url
 	const paths = pathname.split("/");

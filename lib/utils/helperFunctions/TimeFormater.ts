@@ -1,4 +1,5 @@
 export const formatScheduleTime = (date: Date) => {
+	console.log(date);
 	let hours = date.getHours();
 	const minutes = date.getMinutes();
 	const ampm = hours >= 12 ? "PM" : "AM";

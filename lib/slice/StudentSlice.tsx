@@ -9,7 +9,7 @@ import {
 type initialType = {
 	isLoading: boolean;
 	message: string;
-	isSuccess: boolean;
+	isSuccess: boolean
 	student: any | null;
 };
 
